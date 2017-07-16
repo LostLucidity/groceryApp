@@ -15,7 +15,7 @@ module.exports = function(config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-remap-instanbul'),
+      require('karma-remap-istanbul'),
       require('karma-mocha-reporter'),
       require('angular-cli/plugins/karma')
     ],
@@ -42,7 +42,7 @@ module.exports = function(config) {
       'text/x-typescript': ['ts', 'tsx']
     },
 
-    remapInstanbulReporter: {
+    remapIstanbulReporter: {
       reports: {
         html: 'coverage',
         lcovonly: './coverage/coverage.lcov'
@@ -59,7 +59,7 @@ module.exports = function(config) {
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: 
       config.angularCli &&  config.angularCli.codeCoverage 
-      ? ['mocha', 'karma-remap-instanbul']
+      ? ['mocha', 'karma-remap-istanbul']
       : ['mocha'],
 
 
@@ -82,7 +82,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
