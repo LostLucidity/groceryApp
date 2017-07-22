@@ -1,16 +1,16 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { DebugElement }    from '@angular/core';
 
 import { IonicModule } from 'ionic-angular';
 
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-
-import { MyApp } from './app.component';
+import { AppComponent } from './app.component';
 import { HomePage } from '../pages/home/home';
 
  
-let comp: MyApp;
-let fixture: ComponentFixture<MyApp>;
+let comp: AppComponent;
+let fixture: ComponentFixture<AppComponent>;
+let de: DebugElement;
+let el: HTMLElement;
  
 describe('Component: Root Component', () => {
  
@@ -18,15 +18,12 @@ describe('Component: Root Component', () => {
  
         TestBed.configureTestingModule({
  
-            declarations: [MyApp],
+            declarations: [AppComponent],
  
-            providers: [
-                SplashScreen,
-                StatusBar
-            ],
+            providers: [],
  
             imports: [
-                IonicModule.forRoot(MyApp)
+                IonicModule.forRoot(AppComponent)
             ]
  
         }).compileComponents();
@@ -35,7 +32,7 @@ describe('Component: Root Component', () => {
  
     beforeEach(() => {
  
-        fixture = TestBed.createComponent(MyApp);
+        fixture = TestBed.createComponent(AppComponent);
         comp    = fixture.componentInstance;
  
     });

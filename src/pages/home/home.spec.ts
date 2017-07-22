@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { IonicModule, NavController } from 'ionic-angular';
-import { MyApp } from '../../app/app.component';
+import { AppComponent } from '../../app/app.component';
 import { HomePage } from './home';
  
 let comp: HomePage;
@@ -11,20 +11,21 @@ let fixture: ComponentFixture<HomePage>;
 let de: DebugElement;
 let el: HTMLElement;
  
+
 describe('Page: Home Page', () => {
  
     beforeEach(async(() => {
  
         TestBed.configureTestingModule({
  
-            declarations: [MyApp, HomePage],
+            declarations: [AppComponent, HomePage],
  
             providers: [
                 NavController
             ],
  
             imports: [
-                IonicModule.forRoot(MyApp)
+                IonicModule.forRoot(AppComponent)
             ]
  
         }).compileComponents();
