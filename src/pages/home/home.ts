@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { NavController } from 'ionic-angular';
 
 @Component({
@@ -6,9 +7,14 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  title = "My Page";
 
   constructor(public navCtrl: NavController) {
 
+  }
+
+  changeTitle(string) {
+      this.title = string;
   }
 
 }
