@@ -9,7 +9,8 @@
 <ion-content padding>
 
   <ion-input 
-    #item 
+    class="input"
+    #item
     placeholder="Type in an item."
     [value]="selectedItem"
   >
@@ -32,6 +33,7 @@
   <ion-list>
     <ion-item 
       class="editItem" 
+      [class.active]="index==selectedIndex"
       (click)="editItem(index, item)" 
       *ngFor="let item of items; let index=index"
     >

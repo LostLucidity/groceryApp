@@ -23,8 +23,14 @@ export class HomePage {
   }
 
   editItem(selectedIndex, selectedItem) {  
-    this.selectedIndex = selectedIndex;
-    this.selectedItem = selectedItem;
+    if(selectedItem === this.selectedItem) {
+      this.selectedItem = "";
+      this.selectedIndex = null;
+    } else {
+      this.selectedIndex = selectedIndex;
+      this.selectedItem = selectedItem;
+
+    }
   }
 
   updateItem(editedItem) {

@@ -1,4 +1,5 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { By } from "@angular/platform-browser";
 import { DebugElement } from '@angular/core';
 
 import { IonicModule, NavController } from 'ionic-angular';
@@ -101,6 +102,43 @@ describe('Page: Home Page', () => {
     component.selectedItem = "bread";
     component.updateItem(component.selectedItem);
     expect(component.items[component.selectedIndex]).toEqual("bread");
+  })
+
+  it("should highlight the ion-item when selected", () => {
+    let items = ["apples", "bread"];
+    for (let item of items) {
+        component.addItem(item);
+    }
+    expect(component.items.length).toEqual(2);
+    fixture.detectChanges();
+    let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
+    displayItemsDebugElement[0].triggerEventHandler("click", null);
+    fixture.detectChanges();
+    expect(displayItemsDebugElement[0].nativeElement.className).toContain("active");
+    expect(displayItemsDebugElement[1].nativeElement.className).not.toContain("active");
+
+    displayItemsDebugElement[1].triggerEventHandler("click", null);
+    fixture.detectChanges();
+    expect(displayItemsDebugElement[0].nativeElement.className).not.toContain("active");
+    expect(displayItemsDebugElement[1].nativeElement.className).toContain("active");
+  })
+
+  it("should remove highlight when selected highlight is reselected", () => {
+    let items = ["apples", "bread"];
+    for (let item of items) {
+        component.addItem(item);
+    }
+    fixture.detectChanges();
+    let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
+    expect(displayItemsDebugElement.length).toEqual(2);
+    
+    displayItemsDebugElement[0].triggerEventHandler("click", null);
+    fixture.detectChanges();
+    expect(displayItemsDebugElement[0].nativeElement.className).toContain("active")
+    
+    displayItemsDebugElement[0].triggerEventHandler("click", null);
+    fixture.detectChanges();
+    expect(displayItemsDebugElement[0].nativeElement.className).not.toContain("active")
   })
 
   it("should only add or update items when there is content in the input field", () => {
