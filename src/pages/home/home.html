@@ -7,8 +7,36 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <ion-input 
+    #item 
+    placeholder="Type in an item."
+    [value]="selectedItem"
+  >
+  </ion-input>
+  <button ion-button 
+    class="addItemButton" 
+    (click)="addItem(item.value); item.value=''"
+    *ngIf="!selectedItem"
+  >
+    Submit
+  </button>
+  <button ion-button 
+    class="updateItemButton" 
+    (click)="updateItem(item.value); item.value=''"
+    *ngIf="selectedItem"
+  >
+    Update
+  </button>
+
+  <ion-list>
+    <ion-item 
+      class="editItem" 
+      (click)="editItem(index, item)" 
+      *ngFor="let item of items; let index=index"
+    >
+      {{item}}
+    </ion-item>
+  </ion-list>
+
 </ion-content>

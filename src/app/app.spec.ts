@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { DebugElement }    from '@angular/core';
+// import { DebugElement }    from '@angular/core';
 
 import { IonicModule } from 'ionic-angular';
 
@@ -9,8 +9,8 @@ import { HomePage } from '../pages/home/home';
  
 let comp: AppComponent;
 let fixture: ComponentFixture<AppComponent>;
-let de: DebugElement;
-let el: HTMLElement;
+// let de: DebugElement;
+// let el: HTMLElement;
  
 describe('Component: Root Component', () => {
  

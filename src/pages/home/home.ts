@@ -7,14 +7,31 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  title = "My Page";
+  items: Array<string> = [];
+  selectedIndex: number;
+  selectedItem: string = "";
+  title = "GroceryApp";
 
   constructor(public navCtrl: NavController) {
 
   }
 
-  changeTitle(string) {
-      this.title = string;
+  addItem(newItem) {
+    if (newItem) {
+      this.items.push(newItem);
+    }
+  }
+
+  editItem(selectedIndex, selectedItem) {  
+    this.selectedIndex = selectedIndex;
+    this.selectedItem = selectedItem;
+  }
+
+  updateItem(editedItem) {
+    if (editedItem) {
+      this.items[this.selectedIndex] = editedItem;
+      this.selectedItem = "";
+    }
   }
 
 }
