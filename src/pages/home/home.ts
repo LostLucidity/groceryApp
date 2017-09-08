@@ -29,7 +29,6 @@ export class HomePage {
     } else {
       this.selectedIndex = selectedIndex;
       this.selectedItem = selectedItem;
-
     }
   }
 
@@ -38,6 +37,11 @@ export class HomePage {
       this.items[this.selectedIndex] = editedItem;
       this.selectedItem = "";
     }
+  }
+
+  deleteItem() {
+    this.items.splice(this.selectedIndex, 1);
+    this.selectedIndex = null;
   }
 
 }

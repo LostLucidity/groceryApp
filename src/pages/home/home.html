@@ -29,16 +29,23 @@
   >
     Update
   </button>
+  <button ion-button 
+    class="deleteItem" 
+    (click)="deleteItem(); item.value=''"
+    *ngIf="selectedItem"
+  >
+    Delete
+  </button>
 
   <ion-list>
-    <ion-item 
+    <button ion-item 
       class="editItem" 
       [class.active]="index==selectedIndex"
       (click)="editItem(index, item)" 
       *ngFor="let item of items; let index=index"
     >
       {{item}}
-    </ion-item>
+    </button>
   </ion-list>
 
 </ion-content>

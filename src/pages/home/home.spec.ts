@@ -152,6 +152,28 @@ describe('Page: Home Page', () => {
     expect(component.items[component.selectedIndex]).toBeTruthy();
   })
 
+  it("should delete the selected item when clicking on delete button.", () => {
+    // add items
+    let items = ["apples", "bread"];
+    for (let item of items) {
+        component.addItem(item);
+    }
+    fixture.detectChanges();
+    let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
+    expect(displayItemsDebugElement.length).toEqual(2);
+    // select an item
+    let index = 0;
+    displayItemsDebugElement[index].triggerEventHandler("click", null);
+    fixture.detectChanges();
+    // delete an item
+    let deleteItemDebugElement = debugElement.query(By.css(".deleteItem"));
+    deleteItemDebugElement.triggerEventHandler("click", null);
+    fixture.detectChanges();
+    // component.deleteItem();
+    
+    expect(component.items.length).toEqual(1);
+  })
+
 });
 
 
