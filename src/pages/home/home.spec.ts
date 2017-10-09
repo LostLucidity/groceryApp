@@ -3,8 +3,11 @@ import { By } from "@angular/platform-browser";
 import { DebugElement } from '@angular/core';
 
 import { IonicModule, NavController } from 'ionic-angular';
+
 import { AppComponent } from '../../app/app.component';
 import { HomePage } from './home';
+
+import { MOCKGROCERYLIST } from "./mock-data";
  
 let component: HomePage;
 let fixture: ComponentFixture<HomePage>;
@@ -37,6 +40,7 @@ describe('Page: Home Page', () => {
         component    = fixture.componentInstance;
         debugElement = fixture.debugElement;
         nativeElement = fixture.debugElement.nativeElement;
+        localStorage.setItem("groceryList", JSON.stringify(MOCKGROCERYLIST));
  
     });
  
@@ -45,6 +49,7 @@ describe('Page: Home Page', () => {
         component = null;
         debugElement = null;
         nativeElement = null;
+        localStorage.clear();
     });
  
     it('is created', () => {
@@ -68,33 +73,38 @@ describe('Page: Home Page', () => {
     const ionInputElement = nativeElement.querySelector('ion-input');
     const placeholderAttribute = ionInputElement.getAttribute('placeholder');
 
-    expect(placeholderAttribute).toEqual("Type in an item.");
+    expect(placeholderAttribute).toEqual("TYPE HERE TO ADD YOUR ITEM");
     
   }))
 
-  it('should display a list of items if items exist', () => {
-    // const ionInputElement = nativeElement.querySelector('ion-input');
-    // ionInputElement.textContent = 'apple';
-    // debugger;
-    // expect(component.selectedItem).toBeFalsy();
-    // By.css allows for the debug (not nativeElement) element that can trigger the event handler. 
-    // querySelector doesn't return a triggerable element on debugElement.
-    // const buttonDebugElement = debugElement.query(By.css(".addItemButton"));
-    // buttonDebugElement.triggerEventHandler("click", null);
-    // fixture.detectChanges();
-    // expect(component.items.length).toEqual(1);
+  it("should display an 'Add Item' button when an item is entered", () => {
+    fixture.detectChanges();
+    let addButtonDebugElement = debugElement.query(By.css(".addItem"));
+    expect(addButtonDebugElement).toBeFalsy();
+  })
 
-    //   debugger;
-    // const ionItemDebugElement = debugElement.query(By.css('ion-item'));
-    // const ionItemNativeElement = ionItemDebugElement.nativeElement; 
-    
-    // expect(ionItemNativeElement).toBeTruthy;
+  it('should display a list of items if items exist', () => {
+    fixture.detectChanges();
+    let ionItemDebugElement = debugElement.query(By.css(".editItem"));
+    expect(ionItemDebugElement).toBeTruthy();
+  })
+
+  it('should display the save button if items exist', () => {
+    fixture.detectChanges();
+    let saveButtonDebugElement = debugElement.query(By.css(".saveList"));
+    expect(saveButtonDebugElement).toBeTruthy();
+  })
+
+  it('should not display the save button if there is no list', () => {
+    component.items = [];
+    fixture.detectChanges();
+    let saveButtonDebugElement = debugElement.query(By.css(".saveList"));
+    expect(saveButtonDebugElement).toBeTruthy();
   })
 
   it('should allow the editing of an item on the list', () => {
-    // Add "apple"
-    component.addItem("apple");
-    expect(component.items.length).toEqual(1);
+    addItems();
+    expect(component.items.length).toEqual(2);
     // Set "apple" to input field to edit.
     component.editItem(0, "apple");
     expect(component.selectedItem).toEqual("apple");
@@ -105,10 +115,7 @@ describe('Page: Home Page', () => {
   })
 
   it("should highlight the ion-item when selected", () => {
-    let items = ["apples", "bread"];
-    for (let item of items) {
-        component.addItem(item);
-    }
+    addItems();
     expect(component.items.length).toEqual(2);
     fixture.detectChanges();
     let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
@@ -124,11 +131,9 @@ describe('Page: Home Page', () => {
   })
 
   it("should remove highlight when selected highlight is reselected", () => {
-    let items = ["apples", "bread"];
-    for (let item of items) {
-        component.addItem(item);
-    }
+    addItems();
     fixture.detectChanges();
+
     let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
     expect(displayItemsDebugElement.length).toEqual(2);
     
@@ -153,11 +158,7 @@ describe('Page: Home Page', () => {
   })
 
   it("should delete the selected item when clicking on delete button.", () => {
-    // add items
-    let items = ["apples", "bread"];
-    for (let item of items) {
-        component.addItem(item);
-    }
+    addItems();
     fixture.detectChanges();
     let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
     expect(displayItemsDebugElement.length).toEqual(2);
@@ -169,10 +170,42 @@ describe('Page: Home Page', () => {
     let deleteItemDebugElement = debugElement.query(By.css(".deleteItem"));
     deleteItemDebugElement.triggerEventHandler("click", null);
     fixture.detectChanges();
-    // component.deleteItem();
-    
     expect(component.items.length).toEqual(1);
+    expect(component.selectedItem).toBeFalsy();
   })
+
+  it("should be able to save a list of items", () => {
+    addItems();
+    fixture.detectChanges();
+    let savedListLength = component.items.length;
+    // Click to save list to local storage.
+    let saveListDebugElement = debugElement.query(By.css(".saveList"));
+    saveListDebugElement.triggerEventHandler("click", null);
+    // check local storage to mach saved items.
+    expect(savedListLength).toBe(component.items.length);
+    component.addItem("oranges");
+    saveListDebugElement.triggerEventHandler("click", null);
+    component.getList();
+    expect(savedListLength).not.toEqual(component.items.length);
+  })
+
+  // it("should check local storage for existing grocery list", async(() => {
+  //   fixture.whenStable().then(() => {
+  //     expect(component.items.length).toEqual(2);
+  //   })
+  // })) 
+
+  // save list button only should be available with a list
+
+  function addItems() {
+    if (component.items.length === 0) {
+      let items = MOCKGROCERYLIST;
+      for (let item of items) {
+          component.addItem(item);
+      }
+    }
+    
+  }
 
 });
 

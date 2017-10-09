@@ -16,11 +16,11 @@
   >
   </ion-input>
   <button ion-button 
-    class="addItemButton" 
+    class="addItem" 
     (click)="addItem(item.value); item.value=''"
-    *ngIf="!selectedItem"
+    *ngIf="!selectedItem && item.value"
   >
-    Submit
+    Add Item
   </button>
   <button ion-button 
     class="updateItemButton" 
@@ -47,5 +47,13 @@
       {{item}}
     </button>
   </ion-list>
+
+  <button ion-button 
+    class="saveList" 
+    (click)="saveList()"
+    *ngIf="items.length > 0"
+  >
+    Save List
+  </button>
 
 </ion-content>

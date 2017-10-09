@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
@@ -6,7 +6,7 @@ import { NavController } from 'ionic-angular';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
   items: Array<string> = [];
   selectedIndex: number;
   selectedItem: string = "";
@@ -14,6 +14,10 @@ export class HomePage {
 
   constructor(public navCtrl: NavController) {
 
+  }
+
+  ngOnInit() {
+    this.getList();
   }
 
   addItem(newItem) {
@@ -42,6 +46,18 @@ export class HomePage {
   deleteItem() {
     this.items.splice(this.selectedIndex, 1);
     this.selectedIndex = null;
+    this.selectedItem = "";
+  }
+
+  saveList() {
+    localStorage.setItem("groceryList", JSON.stringify(this.items));
+  }
+
+  getList() {
+    let retrievedList = JSON.parse(localStorage.getItem("groceryList")); 
+    if (retrievedList) {
+      this.items = retrievedList;
+    }
   }
 
 }
