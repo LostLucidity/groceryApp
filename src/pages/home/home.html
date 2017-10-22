@@ -8,13 +8,18 @@
 
 <ion-content padding>
 
-  <ion-input 
-    class="input"
-    #item
-    placeholder="Type in an item."
-    [value]="selectedItem"
-  >
-  </ion-input>
+  <ion-item>
+
+    <ion-input 
+      class="input"
+      #item
+      placeholder="Type in an item."
+      [value]="selectedItem"
+    >
+    </ion-input>
+    
+  </ion-item>
+
   <button ion-button 
     class="addItem" 
     (click)="addItem(item.value); item.value=''"
