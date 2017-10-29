@@ -8,42 +8,42 @@ import { AppComponent } from '../../app/app.component';
 import { HomePage } from './home';
 
 import { MOCKGROCERYLIST } from "./mock-data";
- 
+
 let component: HomePage;
 let fixture: ComponentFixture<HomePage>;
 let debugElement: DebugElement;
-let nativeElement: HTMLElement; 
+let nativeElement: HTMLElement;
 
 describe('Page: Home Page', () => {
- 
+
     beforeEach(async(() => {
- 
+
         TestBed.configureTestingModule({
- 
+
             declarations: [AppComponent, HomePage],
- 
+
             providers: [
                 NavController
             ],
- 
+
             imports: [
                 IonicModule.forRoot(AppComponent)
             ]
- 
+
         }).compileComponents();
- 
+
     }));
- 
+
     beforeEach(() => {
- 
+
         fixture = TestBed.createComponent(HomePage);
         component    = fixture.componentInstance;
         debugElement = fixture.debugElement;
         nativeElement = fixture.debugElement.nativeElement;
         localStorage.setItem("groceryList", JSON.stringify(MOCKGROCERYLIST));
- 
+
     });
- 
+
     afterEach(() => {
         fixture.destroy();
         component = null;
@@ -51,14 +51,14 @@ describe('Page: Home Page', () => {
         nativeElement = null;
         localStorage.clear();
     });
- 
+
     it('is created', () => {
- 
+
         expect(fixture).toBeTruthy();
         expect(component).toBeTruthy();
- 
+
     });
- 
+
     it('initialises with a title of GroceryApp', () => {
         expect(component['title']).toEqual('GroceryApp');
     });
@@ -74,7 +74,7 @@ describe('Page: Home Page', () => {
     const placeholderAttribute = ionInputElement.getAttribute('placeholder');
 
     expect(placeholderAttribute).toEqual("TYPE HERE TO ADD YOUR ITEM");
-    
+
   }))
 
   it("should display an 'Add Item' button when an item is entered", () => {
@@ -87,19 +87,6 @@ describe('Page: Home Page', () => {
     fixture.detectChanges();
     let ionItemDebugElement = debugElement.query(By.css(".editItem"));
     expect(ionItemDebugElement).toBeTruthy();
-  })
-
-  it('should display the save button if items exist', () => {
-    fixture.detectChanges();
-    let saveButtonDebugElement = debugElement.query(By.css(".saveList"));
-    expect(saveButtonDebugElement).toBeTruthy();
-  })
-
-  it('should not display the save button if there is no list', () => {
-    component.items = [];
-    fixture.detectChanges();
-    let saveButtonDebugElement = debugElement.query(By.css(".saveList"));
-    expect(saveButtonDebugElement).toBeTruthy();
   })
 
   it('should allow the editing of an item on the list', () => {
@@ -136,11 +123,11 @@ describe('Page: Home Page', () => {
 
     let displayItemsDebugElement = debugElement.queryAll(By.css(".editItem"));
     expect(displayItemsDebugElement.length).toEqual(2);
-    
+
     displayItemsDebugElement[0].triggerEventHandler("click", null);
     fixture.detectChanges();
     expect(displayItemsDebugElement[0].nativeElement.className).toContain("active")
-    
+
     displayItemsDebugElement[0].triggerEventHandler("click", null);
     fixture.detectChanges();
     expect(displayItemsDebugElement[0].nativeElement.className).not.toContain("active")
@@ -174,37 +161,43 @@ describe('Page: Home Page', () => {
     expect(component.selectedItem).toBeFalsy();
   })
 
-  it("should be able to save a list of items", () => {
-    addItems();
-    fixture.detectChanges();
-    let savedListLength = component.items.length;
-    // Click to save list to local storage.
-    let saveListDebugElement = debugElement.query(By.css(".saveList"));
-    saveListDebugElement.triggerEventHandler("click", null);
-    // check local storage to mach saved items.
-    expect(savedListLength).toBe(component.items.length);
-    component.addItem("oranges");
-    saveListDebugElement.triggerEventHandler("click", null);
-    component.getList();
-    expect(savedListLength).not.toEqual(component.items.length);
-  })
-
   // it("should check local storage for existing grocery list", async(() => {
   //   fixture.whenStable().then(() => {
   //     expect(component.items.length).toEqual(2);
   //   })
-  // })) 
+  // }))
 
   // save list button only should be available with a list
 
+  it('should save the list on each change of the list', () => {
+    localStorage.clear();
+    component.getList();
+    const emptyList = component.items;
+    expect(emptyList.length).toEqual(0);
+    // save when adding
+    component.addItem('apples');
+    component.getList();
+    const addedItem = component.items;
+    expect(addedItem.length).toEqual(1);
+    // save when deleting
+    component.selectedIndex = 0;
+    component.deleteItem()
+    component.getList();
+    const deletedItem = component.items;
+    expect(deletedItem.length).toEqual(0);
+  })
+
   function addItems() {
+
     if (component.items.length === 0) {
+
       let items = MOCKGROCERYLIST;
       for (let item of items) {
           component.addItem(item);
       }
+
     }
-    
+
   }
 
 });

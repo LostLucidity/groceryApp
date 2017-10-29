@@ -23,10 +23,11 @@ export class HomePage implements OnInit {
   addItem(newItem) {
     if (newItem) {
       this.items.push(newItem);
+      this.saveList();
     }
   }
 
-  editItem(selectedIndex, selectedItem) {  
+  editItem(selectedIndex, selectedItem) {
     if(selectedItem === this.selectedItem) {
       this.selectedItem = "";
       this.selectedIndex = null;
@@ -46,7 +47,8 @@ export class HomePage implements OnInit {
   deleteItem() {
     this.items.splice(this.selectedIndex, 1);
     this.selectedIndex = null;
-    this.selectedItem = "";
+    this.selectedItem = '';
+    this.saveList()
   }
 
   saveList() {
@@ -54,7 +56,7 @@ export class HomePage implements OnInit {
   }
 
   getList() {
-    let retrievedList = JSON.parse(localStorage.getItem("groceryList")); 
+    let retrievedList = JSON.parse(localStorage.getItem("groceryList"));
     if (retrievedList) {
       this.items = retrievedList;
     }

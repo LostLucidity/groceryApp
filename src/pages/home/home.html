@@ -10,32 +10,32 @@
 
   <ion-item>
 
-    <ion-input 
+    <ion-input
       class="input"
       #item
-      placeholder="Type in an item."
+      placeholder='TYPE HERE TO ADD YOUR ITEM'
       [value]="selectedItem"
     >
     </ion-input>
-    
+
   </ion-item>
 
-  <button ion-button 
-    class="addItem" 
+  <button ion-button
+    class="addItem"
     (click)="addItem(item.value); item.value=''"
     *ngIf="!selectedItem && item.value"
   >
     Add Item
   </button>
-  <button ion-button 
-    class="updateItemButton" 
+  <button ion-button
+    class="updateItemButton"
     (click)="updateItem(item.value); item.value=''"
     *ngIf="selectedItem"
   >
     Update
   </button>
-  <button ion-button 
-    class="deleteItem" 
+  <button ion-button
+    class="deleteItem"
     (click)="deleteItem(); item.value=''"
     *ngIf="selectedItem"
   >
@@ -43,22 +43,14 @@
   </button>
 
   <ion-list>
-    <button ion-item 
-      class="editItem" 
+    <button ion-item
+      class="editItem"
       [class.active]="index==selectedIndex"
-      (click)="editItem(index, item)" 
+      (click)="editItem(index, item)"
       *ngFor="let item of items; let index=index"
     >
       {{item}}
     </button>
   </ion-list>
-
-  <button ion-button 
-    class="saveList" 
-    (click)="saveList()"
-    *ngIf="items.length > 0"
-  >
-    Save List
-  </button>
 
 </ion-content>
