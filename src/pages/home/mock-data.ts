@@ -1,4 +1,12 @@
-export const MOCKGROCERYLIST: Array<string> = [
-    "apples", 
-    "bread"
+import { ItemView } from '../../models/item-view';
+
+export const MOCKGROCERYLIST: Array<ItemView> = [
+  {
+    name: 'apples',
+    checked: false
+  },
+  {
+    name: 'bread',
+    checked: false
+  }
 ]

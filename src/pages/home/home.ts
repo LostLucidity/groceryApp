@@ -2,52 +2,69 @@ import { Component, OnInit } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
+import { ItemView } from '../../models/item-view';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit {
-  items: Array<string> = [];
+  items: Array<ItemView> = [];
   selectedIndex: number;
-  selectedItem: string = "";
+  selectedItem: ItemView = {
+    name: '',
+    checked: false
+  };
   title = "GroceryApp";
+  toggledItems: Array<ItemView> = [];
 
-  constructor(public navCtrl: NavController) {
-
-  }
+  constructor(public navCtrl: NavController) { }
 
   ngOnInit() {
     this.getList();
   }
 
-  addItem(newItem) {
-    if (newItem) {
+  getList() {
+    let retrievedList = JSON.parse(localStorage.getItem("groceryList"));
+    if (retrievedList) {
+      this.items = retrievedList;
+    }
+  }
+
+  addItem(newItemName: string) {
+    let newItem: ItemView = {
+      name: newItemName,
+      checked: false
+    };
+    if (newItemName) {
       this.items.push(newItem);
       this.saveList();
     }
   }
 
-  editItem(selectedIndex, selectedItem) {
-    if(selectedItem === this.selectedItem) {
-      this.selectedItem = "";
+  editItem(selectedIndex: number, selectedItemName: string) {
+
+    if (selectedItemName === this.selectedItem.name) {
+      this.selectedItem.name = '';
       this.selectedIndex = null;
     } else {
       this.selectedIndex = selectedIndex;
-      this.selectedItem = selectedItem;
+      this.selectedItem.name = selectedItemName;
     }
+
   }
 
-  updateItem(editedItem) {
-    if (editedItem) {
-      this.items[this.selectedIndex] = editedItem;
-      this.selectedItem = "";
+  updateItem(editedItemName: string) {
+    if (editedItemName) {
+      this.items[this.selectedIndex].name = editedItemName;
+      this.selectedItem.name = '';
     }
   }
 
   deleteItem() {
     this.items.splice(this.selectedIndex, 1);
     this.selectedIndex = null;
-    this.selectedItem = '';
+    this.selectedItem.name = '';
     this.saveList()
   }
 
@@ -55,10 +72,16 @@ export class HomePage implements OnInit {
     localStorage.setItem("groceryList", JSON.stringify(this.items));
   }
 
-  getList() {
-    let retrievedList = JSON.parse(localStorage.getItem("groceryList"));
-    if (retrievedList) {
-      this.items = retrievedList;
+  toggleItem(item: ItemView, index: number) {
+    console.log(event, index);
+    item.checked = !item.checked;
+
+    if (item.checked === true) {
+      this.items.splice(index, 1);
+      this.toggledItems.push(item);
+    } else {
+      this.toggledItems.splice(index, 1);
+      this.items.push(item);
     }
   }
 

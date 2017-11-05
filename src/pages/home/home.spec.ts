@@ -92,13 +92,12 @@ describe('Page: Home Page', () => {
   it('should allow the editing of an item on the list', () => {
     addItems();
     expect(component.items.length).toEqual(2);
-    // Set "apple" to input field to edit.
-    component.editItem(0, "apple");
-    expect(component.selectedItem).toEqual("apple");
+    // Set 'apple' to input field to edit.
+    component.editItem(0, 'apple');
+    expect(component.selectedItem.name).toEqual('apple');
     // Change to "bread"
-    component.selectedItem = "bread";
-    component.updateItem(component.selectedItem);
-    expect(component.items[component.selectedIndex]).toEqual("bread");
+    component.updateItem('bread');
+    expect(component.items[component.selectedIndex].name).toEqual('bread');
   })
 
   it("should highlight the ion-item when selected", () => {
@@ -158,7 +157,7 @@ describe('Page: Home Page', () => {
     deleteItemDebugElement.triggerEventHandler("click", null);
     fixture.detectChanges();
     expect(component.items.length).toEqual(1);
-    expect(component.selectedItem).toBeFalsy();
+    expect(component.selectedItem.name).toBeFalsy();
   })
 
   // it("should check local storage for existing grocery list", async(() => {
@@ -187,13 +186,42 @@ describe('Page: Home Page', () => {
     expect(deletedItem.length).toEqual(0);
   })
 
+  it(
+    `should display toggle on list items that when clicked will move item to
+    the toggled list`,
+    () => {
+
+      addItems();
+      component.toggleItem(component.items[0], 0)
+      expect(component.items.length).toEqual(1);
+      expect(component.toggledItems.length).toEqual(1);
+
+    }
+  )
+
+  it(
+    `should display toggle on toggledItems that when clicked will move items to
+    items list`,
+    () => {
+
+      addItems();
+      component.toggleItem(component.items[0], 0)
+      expect(component.items.length).toEqual(1);
+      expect(component.toggledItems.length).toEqual(1);
+      component.toggleItem(component.toggledItems[0], 0)
+      expect(component.items.length).toEqual(2);
+      expect(component.toggledItems.length).toEqual(0);
+
+    }
+  )
+
   function addItems() {
 
     if (component.items.length === 0) {
 
       let items = MOCKGROCERYLIST;
       for (let item of items) {
-          component.addItem(item);
+          component.addItem(item.name);
       }
 
     }

@@ -12,9 +12,9 @@
 
     <ion-input
       class="input"
-      #item
+      #itemName
       placeholder='TYPE HERE TO ADD YOUR ITEM'
-      [value]="selectedItem"
+      [value]='selectedItem.name'
     >
     </ion-input>
 
@@ -22,35 +22,69 @@
 
   <button ion-button
     class="addItem"
-    (click)="addItem(item.value); item.value=''"
-    *ngIf="!selectedItem && item.value"
+    (click)="addItem(itemName.value); itemName.value=''"
+    *ngIf="!selectedItem.name && itemName.value"
   >
     Add Item
   </button>
   <button ion-button
     class="updateItemButton"
-    (click)="updateItem(item.value); item.value=''"
-    *ngIf="selectedItem"
+    (click)="updateItem(itemName.value); itemName.value=''"
+    *ngIf="selectedItem.name"
   >
     Update
   </button>
   <button ion-button
     class="deleteItem"
-    (click)="deleteItem(); item.value=''"
-    *ngIf="selectedItem"
+    (click)="deleteItem(); itemName.value=''"
+    *ngIf="selectedItem.name"
   >
     Delete
   </button>
 
   <ion-list>
-    <button ion-item
+
+    <ion-list-header>
+      Shopping List
+    </ion-list-header>
+
+    <ion-item
       class="editItem"
       [class.active]="index==selectedIndex"
-      (click)="editItem(index, item)"
+      (click)="editItem(index, item.name)"
       *ngFor="let item of items; let index=index"
     >
-      {{item}}
-    </button>
+
+      <ion-label>{{item.name}}</ion-label>
+      <ion-toggle
+        (ionChange)='toggleItem(item, index)'
+        [checked]="item.checked"
+      >
+
+      </ion-toggle>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+
+    <ion-list-header>
+      In the Cart
+    </ion-list-header>
+
+    <ion-item
+      *ngFor="let toggledItem of toggledItems; let index=index"
+    >
+      <ion-label>{{toggledItem.name}}</ion-label>
+      <ion-toggle
+        (ionChange)='toggleItem(toggledItem, index)'
+        [checked]="toggledItem.checked"
+      >
+
+      </ion-toggle>
+    </ion-item>
+
   </ion-list>
 
 </ion-content>
