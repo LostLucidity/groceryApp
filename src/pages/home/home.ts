@@ -28,7 +28,7 @@ export class HomePage implements OnInit {
     const retrievedList: Array<ItemView> = JSON.parse(
       localStorage.getItem("groceryList")
     );
-    if (retrievedList && retrievedList[0].name) {
+    if (retrievedList && retrievedList[0]) {
       if (retrievedList[0].name) {
         this.items = retrievedList;
       } else {
